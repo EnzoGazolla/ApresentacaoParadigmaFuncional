@@ -21,78 +21,83 @@
             display: none;
             width: 100vw;
             height: 100vh;
-            padding: 60px;
+            padding: 20px;
             position: relative;
             background: white;
             box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            overflow-y: auto;
         }
 
         .slide.active {
             display: flex;
             flex-direction: column;
-            justify-content: center;
+            justify-content: flex-start;
             align-items: center;
+            padding-top: 40px;
         }
 
         .slide h1 {
-            font-size: 3.5em;
+            font-size: clamp(2em, 5vw, 3.5em);
             color: #2c3e50;
-            margin-bottom: 30px;
+            margin-bottom: 20px;
             text-align: center;
             font-weight: 300;
+            line-height: 1.2;
         }
 
         .slide h2 {
-            font-size: 2.8em;
+            font-size: clamp(1.8em, 4vw, 2.8em);
             color: #34495e;
-            margin-bottom: 40px;
+            margin-bottom: 30px;
             text-align: center;
             font-weight: 400;
+            line-height: 1.2;
         }
 
         .slide h3 {
-            font-size: 1.8em;
+            font-size: clamp(1.2em, 3vw, 1.8em);
             color: #7f8c8d;
-            margin-bottom: 60px;
+            margin-bottom: 40px;
             text-align: center;
             font-weight: 300;
+            line-height: 1.3;
         }
 
         .slide p {
-            font-size: 1.4em;
-            line-height: 1.8;
+            font-size: clamp(1em, 2.5vw, 1.4em);
+            line-height: 1.6;
             color: #2c3e50;
-            max-width: 900px;
-            margin: 0 auto 40px;
+            max-width: 90%;
+            margin: 0 auto 30px;
             text-align: center;
         }
 
         .author {
             position: absolute;
-            bottom: 40px;
-            right: 60px;
-            font-size: 1.2em;
+            bottom: 20px;
+            right: 20px;
+            font-size: clamp(0.9em, 2vw, 1.2em);
             color: #7f8c8d;
         }
 
         .controls {
             position: fixed;
-            bottom: 30px;
+            bottom: 15px;
             left: 50%;
             transform: translateX(-50%);
             z-index: 1000;
             display: flex;
-            gap: 15px;
+            gap: 10px;
         }
 
         .btn {
-            padding: 12px 24px;
+            padding: clamp(8px, 2vw, 12px) clamp(12px, 3vw, 24px);
             background: #3498db;
             color: white;
             border: none;
-            border-radius: 8px;
+            border-radius: 6px;
             cursor: pointer;
-            font-size: 1em;
+            font-size: clamp(0.8em, 2vw, 1em);
             transition: all 0.3s ease;
         }
 
@@ -109,13 +114,13 @@
 
         .slide-counter {
             position: fixed;
-            top: 30px;
-            right: 30px;
+            top: 15px;
+            right: 15px;
             background: rgba(52, 73, 94, 0.8);
             color: white;
-            padding: 10px 20px;
-            border-radius: 20px;
-            font-size: 1em;
+            padding: 8px 16px;
+            border-radius: 15px;
+            font-size: clamp(0.8em, 2vw, 1em);
             z-index: 1000;
         }
 
@@ -129,22 +134,25 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 40px;
-            margin: 40px 0;
+            gap: clamp(15px, 4vw, 40px);
+            margin: 30px 0;
+            flex-wrap: wrap;
         }
 
         .diagram-box {
-            padding: 20px 40px;
+            padding: clamp(10px, 3vw, 20px) clamp(20px, 4vw, 40px);
             background: #ecf0f1;
             border: 2px solid #3498db;
-            border-radius: 10px;
-            font-size: 1.3em;
+            border-radius: 8px;
+            font-size: clamp(1em, 2.5vw, 1.3em);
             font-weight: bold;
             color: #2c3e50;
+            min-width: 80px;
+            text-align: center;
         }
 
         .diagram-arrow {
-            font-size: 2em;
+            font-size: clamp(1.5em, 3vw, 2em);
             color: #3498db;
         }
 
@@ -152,67 +160,70 @@
             background: #3498db;
             color: white;
             border-radius: 50%;
-            width: 80px;
-            height: 80px;
+            width: clamp(60px, 12vw, 80px);
+            height: clamp(60px, 12vw, 80px);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.8em;
+            font-size: clamp(1.2em, 3vw, 1.8em);
             font-weight: bold;
         }
 
         .pillars {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 40px;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: clamp(20px, 4vw, 40px);
             max-width: 1000px;
             margin: 0 auto;
+            width: 100%;
         }
 
         .pillar {
             text-align: center;
-            padding: 30px;
+            padding: clamp(20px, 4vw, 30px);
             background: #f8f9fa;
-            border-radius: 15px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
         }
 
         .pillar-icon {
-            font-size: 3em;
-            margin-bottom: 20px;
+            font-size: clamp(2em, 5vw, 3em);
+            margin-bottom: clamp(15px, 3vw, 20px);
             color: #3498db;
         }
 
         .pillar h4 {
-            font-size: 1.5em;
+            font-size: clamp(1.2em, 3vw, 1.5em);
             color: #2c3e50;
-            margin-bottom: 15px;
+            margin-bottom: clamp(10px, 2vw, 15px);
         }
 
         .pillar p {
-            font-size: 1.1em;
-            line-height: 1.6;
+            font-size: clamp(0.9em, 2vw, 1.1em);
+            line-height: 1.5;
             color: #7f8c8d;
             text-align: left;
         }
 
         .code-blocks {
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 30px;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: clamp(15px, 3vw, 30px);
             max-width: 1000px;
             margin: 0 auto;
+            width: 100%;
         }
 
         .code-block {
             background: #2c3e50;
-            border-radius: 10px;
-            padding: 25px;
+            border-radius: 8px;
+            padding: clamp(15px, 3vw, 25px);
             color: #ecf0f1;
             font-family: 'Courier New', monospace;
-            font-size: 1.1em;
-            line-height: 1.6;
+            font-size: clamp(0.8em, 2vw, 1.1em);
+            line-height: 1.5;
             position: relative;
+            overflow-x: auto;
         }
 
         .code-comment {
@@ -235,36 +246,48 @@
 
         .applications-grid {
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 30px;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: clamp(20px, 4vw, 30px);
             max-width: 800px;
             margin: 0 auto;
+            width: 100%;
         }
 
         .application {
             background: #f8f9fa;
-            padding: 25px;
-            border-radius: 10px;
+            padding: clamp(15px, 3vw, 25px);
+            border-radius: 8px;
             text-align: center;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .application h4 {
+            font-size: clamp(1.1em, 2.5vw, 1.3em);
+            margin-bottom: 10px;
+            color: #2c3e50;
+        }
+
+        .application p {
+            font-size: clamp(0.9em, 2vw, 1em);
+            color: #7f8c8d;
         }
 
         .case-study {
-            max-width: 900px;
+            max-width: 95%;
             margin: 0 auto;
             text-align: center;
         }
 
         .whatsapp-logo {
-            width: 100px;
-            height: 100px;
-            margin: 30px auto;
+            width: clamp(60px, 15vw, 100px);
+            height: clamp(60px, 15vw, 100px);
+            margin: clamp(20px, 4vw, 30px) auto;
             background: #25d366;
-            border-radius: 20px;
+            border-radius: 15px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 3em;
+            font-size: clamp(1.8em, 4vw, 3em);
             color: white;
         }
 
@@ -281,6 +304,66 @@
 
         .slide.active > * {
             animation: fadeIn 0.8s ease-out forwards;
+        }
+
+        /* Media Queries para telas muito pequenas */
+        @media (max-width: 480px) {
+            .slide {
+                padding: 15px;
+                padding-top: 60px;
+                padding-bottom: 80px;
+            }
+            
+            .diagram {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .diagram-arrow {
+                transform: rotate(90deg);
+            }
+            
+            .pillars {
+                grid-template-columns: 1fr;
+            }
+            
+            .code-blocks {
+                grid-template-columns: 1fr;
+            }
+            
+            .applications-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .controls {
+                bottom: 10px;
+                gap: 8px;
+            }
+            
+            .btn {
+                font-size: 0.9em;
+                padding: 10px 16px;
+            }
+        }
+
+        @media (max-width: 320px) {
+            .slide {
+                padding: 10px;
+                padding-top: 50px;
+                padding-bottom: 70px;
+            }
+            
+            .slide h1 {
+                font-size: 1.8em;
+            }
+            
+            .slide h2 {
+                font-size: 1.5em;
+            }
+            
+            .slide p {
+                font-size: 0.95em;
+            }
         }
     </style>
 </head>
