@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Desvendando a Programação Funcional</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            overflow: hidden;
+        }
+
+        .slide {
+            display: none;
+            width: 100vw;
+            height: 100vh;
+            padding: 60px;
+            position: relative;
+            background: white;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .slide.active {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .slide h1 {
+            font-size: 3.5em;
+            color: #2c3e50;
+            margin-bottom: 30px;
+            text-align: center;
+            font-weight: 300;
+        }
+
+        .slide h2 {
+            font-size: 2.8em;
+            color: #34495e;
+            margin-bottom: 40px;
+            text-align: center;
+            font-weight: 400;
+        }
+
+        .slide h3 {
+            font-size: 1.8em;
+            color: #7f8c8d;
+            margin-bottom: 60px;
+            text-align: center;
+            font-weight: 300;
+        }
+
+        .slide p {
+            font-size: 1.4em;
+            line-height: 1.8;
+            color: #2c3e50;
+            max-width: 900px;
+            margin: 0 auto 40px;
+            text-align: center;
+        }
+
+        .author {
+            position: absolute;
+            bottom: 40px;
+            right: 60px;
+            font-size: 1.2em;
+            color: #7f8c8d;
+        }
+
+        .controls {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1000;
+            display: flex;
+            gap: 15px;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            background: #3498db;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: all 0.3s ease;
+        }
+
+        .btn:hover {
+            background: #2980b9;
+            transform: translateY(-2px);
+        }
+
+        .btn:disabled {
+            background: #bdc3c7;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .slide-counter {
+            position: fixed;
+            top: 30px;
+            right: 30px;
+            background: rgba(52, 73, 94, 0.8);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-size: 1em;
+            z-index: 1000;
+        }
+
+        /* Slide específicos */
+        .slide1 {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%),
+                       url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000"><defs><pattern id="grid" width="50" height="50" patternUnits="userSpaceOnUse"><path d="M 50 0 L 0 0 0 50" fill="none" stroke="%23667eea" stroke-width="1" opacity="0.1"/></pattern></defs><rect width="100%" height="100%" fill="url(%23grid)"/></svg>');
+        }
+
+        .diagram {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 40px;
+            margin: 40px 0;
+        }
+
+        .diagram-box {
+            padding: 20px 40px;
+            background: #ecf0f1;
+            border: 2px solid #3498db;
+            border-radius: 10px;
+            font-size: 1.3em;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+
+        .diagram-arrow {
+            font-size: 2em;
+            color: #3498db;
+        }
+
+        .function-symbol {
+            background: #3498db;
+            color: white;
+            border-radius: 50%;
+            width: 80px;
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8em;
+            font-weight: bold;
+        }
+
+        .pillars {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 40px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .pillar {
+            text-align: center;
+            padding: 30px;
+            background: #f8f9fa;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .pillar-icon {
+            font-size: 3em;
+            margin-bottom: 20px;
+            color: #3498db;
+        }
+
+        .pillar h4 {
+            font-size: 1.5em;
+            color: #2c3e50;
+            margin-bottom: 15px;
+        }
+
+        .pillar p {
+            font-size: 1.1em;
+            line-height: 1.6;
+            color: #7f8c8d;
+            text-align: left;
+        }
+
+        .code-blocks {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .code-block {
+            background: #2c3e50;
+            border-radius: 10px;
+            padding: 25px;
+            color: #ecf0f1;
+            font-family: 'Courier New', monospace;
+            font-size: 1.1em;
+            line-height: 1.6;
+            position: relative;
+        }
+
+        .code-comment {
+            color: #95a5a6;
+            font-style: italic;
+        }
+
+        .code-keyword {
+            color: #e74c3c;
+            font-weight: bold;
+        }
+
+        .code-string {
+            color: #2ecc71;
+        }
+
+        .code-number {
+            color: #f39c12;
+        }
+
+        .applications-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 30px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .application {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .case-study {
+            max-width: 900px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .whatsapp-logo {
+            width: 100px;
+            height: 100px;
+            margin: 30px auto;
+            background: #25d366;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3em;
+            color: white;
+        }
+
+        .highlight {
+            background: linear-gradient(120deg, #84fab0 0%, #8fd3f4 100%);
+            padding: 2px 8px;
+            border-radius: 5px;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .slide.active > * {
+            animation: fadeIn 0.8s ease-out forwards;
+        }
+    </style>
+</head>
+<body>
+    <!-- Slide 1: Título -->
+    <div class="slide slide1 active">
+        <h1>Desvendando a Programação Funcional</h1>
+        <h3>Uma Abordagem para Construir Software Confiável e Escalável</h3>
+        <div class="author">Apresentado por: [Seu Nome/Equipe]</div>
+    </div>
+
+    <!-- Slide 2: Principais Definições -->
+    <div class="slide">
+        <h2>O Que é Programação Funcional?</h2>
+        <p>A programação funcional é um paradigma declarativo onde a computação é vista como um fluxo de dados através de funções matemáticas puras. Em vez de especificar <em>como</em> realizar uma tarefa através de uma sequência de comandos que alteram o estado do programa, focamos em descrever <em>o que</em> o resultado deve ser. Este paradigma evita efeitos colaterais e dados mutáveis, tornando o código mais previsível, testável e confiável.</p>
+        
+        <div class="diagram">
+            <div class="diagram-box">Entrada</div>
+            <div class="diagram-arrow">→</div>
+            <div class="function-symbol">ƒ(x)</div>
+            <div class="diagram-arrow">→</div>
+            <div class="diagram-box">Saída</div>
+        </div>
+    </div>
+
+    <!-- Slide 3: Propriedades Relacionadas ao Paradigma Funcional -->
+    <div class="slide">
+        <h2>Os Pilares da Programação Funcional</h2>
+        <div class="pillars">
+            <div class="pillar">
+                <div class="pillar-icon">🎯</div>
+                <h4>Funções Puras</h4>
+                <p>Sempre produzem a mesma saída para a mesma entrada e não possuem efeitos colaterais observáveis. Isso garante previsibilidade e facilita testes e debugging.</p>
+            </div>
+            <div class="pillar">
+                <div class="pillar-icon">🔒</div>
+                <h4>Imutabilidade</h4>
+                <p>Dados não são alterados após sua criação. Em vez disso, novas estruturas de dados são geradas, prevenindo bugs relacionados à concorrência e estados inconsistentes.</p>
+            </div>
+            <div class="pillar">
+                <div class="pillar-icon">🔗</div>
+                <h4>Funções de Ordem Superior</h4>
+                <p>Funções podem ser tratadas como dados, sendo passadas como argumentos e retornadas por outras funções, permitindo um alto nível de abstração e reutilização.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 4: Exemplos de Códigos em Scheme (Propriedades) -->
+    <div class="slide">
+        <h2>Propriedades na Prática com Scheme</h2>
+        <div class="code-blocks">
+            <div class="code-block">
+                <div class="code-comment">;; Função Pura - sempre retorna o mesmo resultado</div>
+                <div><span class="code-keyword">(define</span> (soma x y)</div>
+                <div>  <span class="code-keyword">(+</span> x y<span class="code-keyword">))</span></div>
+                <br>
+                <div><span class="code-keyword">(</span>soma <span class="code-number">3</span> <span class="code-number">5</span><span class="code-keyword">)</span> <span class="code-comment">;; sempre retorna 8</span></div>
+                <div><span class="code-comment">;; Sem efeitos colaterais</span></div>
+            </div>
+            <div class="code-block">
+                <div class="code-comment">;; Imutabilidade - lista original permanece intacta</div>
+                <div><span class="code-keyword">(define</span> lista-original <span class="code-keyword">'(</span><span class="code-number">1 2 3</span><span class="code-keyword">))</span></div>
+                <div><span class="code-keyword">(define</span> nova-lista</div>
+                <div>  <span class="code-keyword">(cons</span> <span class="code-number">0</span> lista-original<span class="code-keyword">))</span></div>
+                <br>
+                <div><span class="code-comment">;; lista-original ainda é (1 2 3)</span></div>
+                <div><span class="code-comment">;; nova-lista é (0 1 2 3)</span></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 5: Exemplos de Códigos em Scheme (Padrões) -->
+    <div class="slide">
+        <h2>Padrões Funcionais Comuns em Scheme</h2>
+        <div class="code-blocks">
+            <div class="code-block">
+                <div class="code-comment">;; Map - transforma cada elemento</div>
+                <div><span class="code-keyword">(define</span> numeros <span class="code-keyword">'(</span><span class="code-number">1 2 3 4 5</span><span class="code-keyword">))</span></div>
+                <br>
+                <div><span class="code-keyword">(map</span> <span class="code-keyword">(lambda</span> (x) <span class="code-keyword">(*</span> x <span class="code-number">2</span><span class="code-keyword">))</span> numeros<span class="code-keyword">)</span></div>
+                <br>
+                <div><span class="code-comment">;; Resultado: (2 4 6 8 10)</span></div>
+                <div><span class="code-comment">;; Dobra cada número da lista</span></div>
+            </div>
+            <div class="code-block">
+                <div class="code-comment">;; Filter - seleciona elementos por critério</div>
+                <div><span class="code-keyword">(define</span> numeros <span class="code-keyword">'(</span><span class="code-number">1 2 3 4 5 6</span><span class="code-keyword">))</span></div>
+                <br>
+                <div><span class="code-keyword">(filter</span> <span class="code-keyword">(lambda</span> (x) <span class="code-keyword">(=</span> <span class="code-keyword">(modulo</span> x <span class="code-number">2</span><span class="code-keyword">)</span> <span class="code-number">0</span><span class="code-keyword">))</span> numeros<span class="code-keyword">)</span></div>
+                <br>
+                <div><span class="code-comment">;; Resultado: (2 4 6)</span></div>
+                <div><span class="code-comment">;; Filtra apenas números pares</span></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 6: Aplicações nas Empresas e Indústrias -->
+    <div class="slide">
+        <h2>Aplicações no Mundo Real</h2>
+        <p>As garantias oferecidas pelo paradigma funcional - como imutabilidade, ausência de efeitos colaterais e composabilidade - o tornam ideal para sistemas de alta performance e confiabilidade que precisam lidar com concorrência e processamento distribuído.</p>
+        
+        <div class="applications-grid">
+            <div class="application">
+                <h4>📊 Big Data</h4>
+                <p>Apache Spark utiliza conceitos funcionais para processamento paralelo de grandes volumes de dados</p>
+            </div>
+            <div class="application">
+                <h4>📡 Telecomunicações</h4>
+                <p>Erlang/Elixir em sistemas de mensagens e telecomunicações com alta disponibilidade</p>
+            </div>
+            <div class="application">
+                <h4>🖥️ Interfaces Reativas</h4>
+                <p>Elm e React promovem interfaces de usuário previsíveis e livres de bugs</p>
+            </div>
+            <div class="application">
+                <h4>💰 Fintech</h4>
+                <p>Plataformas de análise financeira e trading de alta frequência</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 7: Estudo de Caso -->
+    <div class="slide">
+        <h2>Estudo de Caso Rápido: Como o WhatsApp Lida com Bilhões de Mensagens</h2>
+        <div class="case-study">
+            <div class="whatsapp-logo">📱</div>
+            <p>A equipe de engenharia do WhatsApp utilizou a linguagem funcional <span class="highlight">Erlang</span> para construir um sistema de mensagens capaz de gerenciar <strong>milhões de conexões simultâneas</strong> em um único servidor. As funcionalidades da linguagem, como <span class="highlight">processos leves</span> e a <span class="highlight">ausência de estado compartilhado</span>, foram fundamentais para alcançar a escalabilidade e a altíssima disponibilidade (<strong>99.999%</strong>) pelas quais o serviço é conhecido mundialmente.</p>
+        </div>
+    </div>
+
+    <!-- Controles de navegação -->
+    <div class="controls">
+        <button class="btn" onclick="previousSlide()">← Anterior</button>
+        <button class="btn" onclick="nextSlide()">Próximo →</button>
+    </div>
+
+    <!-- Contador de slides -->
+    <div class="slide-counter">
+        <span id="current-slide">1</span> / <span id="total-slides">7</span>
+    </div>
+
+    <script>
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const totalSlides = slides.length;
+
+        document.getElementById('total-slides').textContent = totalSlides;
+
+        function showSlide(n) {
+            slides[currentSlide].classList.remove('active');
+            currentSlide = (n + totalSlides) % totalSlides;
+            slides[currentSlide].classList.add('active');
+            document.getElementById('current-slide').textContent = currentSlide + 1;
+            
+            // Atualizar botões
+            document.querySelector('.controls button:first-child').disabled = currentSlide === 0;
+            document.querySelector('.controls button:last-child').disabled = currentSlide === totalSlides - 1;
+        }
+
+        function nextSlide() {
+            if (currentSlide < totalSlides - 1) {
+                showSlide(currentSlide + 1);
+            }
+        }
+
+        function previousSlide() {
+            if (currentSlide > 0) {
+                showSlide(currentSlide - 1);
+            }
+        }
+
+        // Navegação por teclado
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight' || e.key === ' ') {
+                nextSlide();
+            } else if (e.key === 'ArrowLeft') {
+                previousSlide();
+            }
+        });
+
+        // Inicialização
+        showSlide(0);
+    </script>
+</body>
+</html>
